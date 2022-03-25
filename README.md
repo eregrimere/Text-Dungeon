@@ -4,5 +4,6 @@ Projeto compartilhado com alunos para uma aventura RPG baseada em texto feita em
 # Esse é um teste
 Isso é apenas um exemplo de modificação para a branch principal
 
-# Alunos 
+# Alunos
 Matheus
+Jumuel
