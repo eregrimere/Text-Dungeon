@@ -11,3 +11,4 @@ Mugi
 Rival
 FuzzyBot
 Obiits
+Gepedo
