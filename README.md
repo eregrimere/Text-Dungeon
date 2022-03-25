@@ -8,3 +8,4 @@ Isso é apenas um exemplo de modificação para a branch principal
 Matheus
 Jumuel
 Rival
+FuzzyBot
