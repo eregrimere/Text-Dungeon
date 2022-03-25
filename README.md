@@ -7,3 +7,4 @@ Isso é apenas um exemplo de modificação para a branch principal
 # Alunos
 Matheus
 Jumuel
+Rival
