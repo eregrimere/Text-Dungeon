@@ -12,3 +12,15 @@ local Personagem = {
         ["Carisma"] = 0
     }
 }
+
+-- Criação de personagem
+
+print("Crie seu personagem:")
+io.write("Nome: ");
+Personagem["Nome"] = io.read("l")
+io.write("Genero: ");
+Personagem["Genero"] = io.read("l")
+io.write("Raca: ");
+Personagem["Raca"] = io.read("l")
+io.write("Classe: ");
+Personagem["Classe"] = io.read("l")
