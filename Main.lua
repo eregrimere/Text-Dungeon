@@ -26,10 +26,10 @@ local Racas = {
         Destreza = 1,
         Resistencia = 3
     },
-    Gnomo = {
-        Forca = 1,
-        Destreza = 4,
-        Resistencia = 1
+    Ogro = {
+        Forca = 3,
+        Destreza = 1,
+        Resistencia = 2
     }
 }
 
@@ -63,6 +63,23 @@ local function StringValida(String, QuantidadeLetras)
     return true -- retorna true se a string existe, não é vazia e não contém caracteres especiais
 end
 
+-- Lista os valores dentro de uma table
+local function ListarTable(Table)
+    local TextoFinal = ""
+    for Nome, Valor in pairs(Table) do
+        TextoFinal = TextoFinal .. Nome .. "    "
+    end
+    return TextoFinal
+end
+
+-- Juntar atributos de duas tables
+local function JuntarAtributos(Table)
+    for Nome, Valor in pairs(Table) do
+        Player.Atributos[Nome] = Player.Atributos[Nome] + Valor
+    end
+end
+
+
 
 repeat -- Loop para checar se o nome é valido
     io.write("Nome: ")
@@ -72,3 +89,19 @@ repeat -- Loop para checar se o nome é valido
         print("Nome invalido, coloque um nome com mais de 3 letras e sem caracteres especiais.")
     end
 until NomeValido
+
+print("\nEscolha uma das racas abaixo:\n" .. ListarTable(Racas))
+repeat -- Loop para checar se a raça é valida
+    io.write("Raca: ")
+    Player.Raca = io.read("l"):lower()
+    local RacaValida = false
+    for Nome, Atributos in pairs(Racas) do
+        if Nome:lower() == Player.Raca then
+            RacaValida = true
+            JuntarAtributos(Atributos)
+        end
+    end
+    if not RacaValida then
+        print("\nRaca invalida, escolha uma das racas abaixo:\n" .. ListarTable(Racas))
+    end
+until RacaValida
