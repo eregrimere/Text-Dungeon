@@ -10,6 +10,47 @@ local Player = {
     Equipamentos = {}
 }
 
+local Racas = {
+    Humano = {
+        Forca = 2,
+        Destreza = 2,
+        Resistencia = 2
+    },
+    Elfo = {
+        Forca = 2,
+        Destreza = 3,
+        Resistencia = 1
+    },
+    Anao = {
+        Forca = 2,
+        Destreza = 1,
+        Resistencia = 3
+    },
+    Gnomo = {
+        Forca = 1,
+        Destreza = 4,
+        Resistencia = 1
+    }
+}
+
+local Classes = {
+    Guerreiro = {
+        Forca = 2,
+        Destreza = 0,
+        Resistencia = 0
+    },
+    Ladino = {
+        Forca = 0,
+        Destreza = 2,
+        Resistencia = 0
+    },
+    Paladino = {
+        Forca = 0,
+        Destreza = 0,
+        Resistencia = 2
+    }
+}
+
 -- Protótipo de criação de personagem
 
 
