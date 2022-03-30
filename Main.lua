@@ -42,6 +42,22 @@ local function JuntarAtributos(Table)
     for Nome, Valor in pairs(Table) do Player.Atributos[Nome] = Player.Atributos[Nome] + Valor end
 end
 
+-- Lista todos os atributos de um personagem
+local function ListarAtributos(Personagem)
+    local TextoFinal = "Atributos de " .. Personagem.Nome .. ":\n"
+    for Nome, Valor in pairs(Personagem.Atributos) do
+        TextoFinal = TextoFinal .. "  " .. Nome .. ": " .. Valor .. "\n"
+    end
+    return TextoFinal
+end
+
+-- Retorna o valor total de pontos de atributos de um personagem
+local function SomarAtributos(Personagem)
+    local SomaTotal = 0
+    for _, Valor in pairs(Personagem.Atributos) do SomaTotal = SomaTotal + Valor end
+    return SomaTotal
+end
+
 repeat -- Loop para checar se o nome é valido
     io.write("Nome: ")
     Player.Nome = io.read("l")
@@ -72,3 +88,29 @@ end
 
 EscolherRacaClasse(Racas, Player.Raca, "Raca", "racas")
 EscolherRacaClasse(Classes, Player.Classe, "Classe", "classes")
+
+print("\nDistribua os atributos do seu personagem:\n" .. ListarAtributos(Player) ..
+          "Pontos restantes: " .. (18 - SomarAtributos(Player)))
+
+-- Função para distribuir os pontos de atributos
+local function DistribuirPontos(Atributo)
+    local PontosRestantes = 18 - SomarAtributos(Player)
+    if PontosRestantes == 0 then return true end
+    io.write("Coloque os pontos de " .. Atributo .. ": ")
+    local NumeroRecebido = io.read("n")
+    local Placeholder = io.read("l")
+    if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido > 0 then
+        Player.Atributos[Atributo] = Player.Atributos[Atributo] + NumeroRecebido
+        print("\n" .. ListarAtributos(Player) .. "Pontos restantes: " ..
+                  (PontosRestantes - NumeroRecebido))
+    else
+        print("\nNumero invalido, coloque um numero entre 1 e " .. PontosRestantes)
+        DistribuirPontos(Atributo)
+    end
+end
+
+repeat
+    DistribuirPontos("Forca")
+    DistribuirPontos("Destreza")
+    DistribuirPontos("Resistencia")
+until SomarAtributos(Player) == 18
