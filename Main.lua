@@ -90,18 +90,23 @@ repeat -- Loop para checar se o nome é valido
     end
 until NomeValido
 
-print("\nEscolha uma das racas abaixo:\n" .. ListarTable(Racas))
-repeat -- Loop para checar se a raça é valida
-    io.write("Raca: ")
-    Player.Raca = io.read("l"):lower()
-    local RacaValida = false
-    for Nome, Atributos in pairs(Racas) do
-        if Nome:lower() == Player.Raca then
-            RacaValida = true
-            JuntarAtributos(Atributos)
+local function EscolherRacaClasse(Table, Table2, Tipo, Tipo2)
+    print("\nEscolha uma das " .. Tipo2 .. " abaixo:\n" .. ListarTable(Table))
+    repeat -- Loop para checar se é valido
+        io.write(Tipo .. ": ")
+        Table2 = io.read("l"):lower()
+        local Valido = false
+        for Nome, Atributos in pairs(Table) do
+            if Nome:lower() == Table2 then
+                Valido = true
+                JuntarAtributos(Atributos)
+            end
         end
-    end
-    if not RacaValida then
-        print("\nRaca invalida, escolha uma das racas abaixo:\n" .. ListarTable(Racas))
-    end
-until RacaValida
+        if not Valido then
+            print("\n" .. Tipo .. " invalida, escolha uma das " .. Tipo2 .. " abaixo:\n" .. ListarTable(Table))
+        end
+    until Valido
+end
+
+EscolherRacaClasse(Racas, Player.Raca, "Raca", "racas")
+EscolherRacaClasse(Classes, Player.Classe, "Classe", "classes")
