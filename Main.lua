@@ -10,3 +10,14 @@ local Player = {
     Equipamentos = {}
 }
 
+-- Protótipo de criação de personagem
+
+
+-- Checa se uma string é valida
+local function StringValida(String, QuantidadeLetras)
+    if QuantidadeLetras == nil then
+        QuantidadeLetras = 1 -- Se não for passado, assume que é 1
+    end
+    if String == nil or #String < QuantidadeLetras or String:match("[%p%d]") then return false end
+    return true -- retorna true se a string existe, não é vazia e não contém caracteres especiais
+end
