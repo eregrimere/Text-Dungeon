@@ -42,14 +42,20 @@ local function JuntarAtributos(Table)
     for Nome, Valor in pairs(Table) do Player.Atributos[Nome] = Player.Atributos[Nome] + Valor end
 end
 
--- Lista todos os atributos de um personagem
-local function ListarAtributos(Personagem)
-    local TextoFinal = "Atributos de " .. Personagem.Nome .. ":\n"
-    for Nome, Valor in pairs(Personagem.Atributos) do
-        TextoFinal = TextoFinal .. "  " .. Nome .. ": " .. Valor .. "\n"
+-- Lista um dictionary recebido
+local function ListarTableDictionarys(Table, Espacos)
+    local TextoFinal = ""
+    if Espacos == nil then Espacos = 0 end
+    for Nome, Valor in pairs(Table) do
+        if type(Valor) == "table" then
+            TextoFinal = TextoFinal .. string.rep("    ", Espacos) .. Nome .. ":\n" .. ListarTableDictionarys(Valor, Espacos + 1)
+        else
+            TextoFinal = TextoFinal .. string.rep("    ", Espacos) .. Nome .. ": " .. Valor .. "\n"
+        end
     end
     return TextoFinal
 end
+
 
 -- Retorna o valor total de pontos de atributos de um personagem
 local function SomarAtributos(Personagem)
@@ -86,7 +92,7 @@ local function DistribuirPontos(Atributo)
     local Placeholder = io.read("l")
     if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido >= 0 then
         Player.Atributos[Atributo] = Player.Atributos[Atributo] + NumeroRecebido
-        print("\n" .. ListarAtributos(Player) .. "Pontos restantes: " ..
+        print("\n" .. ListarTableDictionarys(Player.Atributos, 1) .. "Pontos restantes: " ..
                   (PontosRestantes - NumeroRecebido))
     else
         print("\nNumero invalido, coloque um numero entre 0 e " .. PontosRestantes)
@@ -96,7 +102,7 @@ end
 
 -- Função para perguntar se o jogador quer redistribuir os pontos novamente
 local function RedistribuirPontos(Backup)
-    print("\n\nAtributos finais:\n" .. ListarAtributos(Player))
+    print("\n\nAtributos finais:\n" .. ListarTableDictionarys(Player.Atributos, 1))
     print("Deseja redistribuir os pontos de atributos?")
     io.write("(S/N): ")
     local Resposta = io.read("l")
@@ -110,7 +116,7 @@ end
 
 -- Função que ativa as outras funções de distribuição de pontos
 local function DistribuicaoAtributos()
-    print("\nDistribua os atributos do seu personagem:\n" .. ListarAtributos(Player) ..
+    print("\nDistribua os atributos do seu personagem:\n" .. ListarTableDictionarys(Player.Atributos, 1) ..
               "Pontos restantes: " .. (18 - SomarAtributos(Player)))
     local BackupPontos = {}
     for Nome, Valor in pairs(Player.Atributos) do BackupPontos[Nome] = Valor end
@@ -139,3 +145,6 @@ EscolherRacaClasse(Racas, "Raca", "racas")
 EscolherRacaClasse(Classes, "Classe", "classes")
 
 DistribuicaoAtributos()
+
+
+print("\n\n\n\n\nPERSONAGEM CRIADO:\n" .. ListarTableDictionarys(Player, 1))
