@@ -19,7 +19,7 @@ local Classes = {
     Paladino = {Forca = 0, Destreza = 0, Resistencia = 2}
 }
 
--- ? Protótipo de criação de personagem
+-- ? Funções
 
 -- Checa se uma string é uma palavra valida
 local function StringValida(String, QuantidadeLetras)
@@ -58,23 +58,14 @@ local function SomarAtributos(Personagem)
     return SomaTotal
 end
 
-repeat -- Loop para checar se o nome é valido
-    io.write("Nome: ")
-    Player.Nome = io.read("l")
-    local NomeValido = StringValida(Player.Nome, 3)
-    if not NomeValido then
-        print("Nome invalido, coloque um nome com mais de 3 letras e sem caracteres especiais.")
-    end
-until NomeValido
-
-local function EscolherRacaClasse(Table, Table2, Tipo, Tipo2)
+local function EscolherRacaClasse(Table, Tipo, Tipo2)
     print("\nEscolha uma das " .. Tipo2 .. " abaixo:\n" .. ListarTable(Table))
     repeat -- Loop para checar se é valido
         io.write(Tipo .. ": ")
-        Table2 = io.read("l"):lower()
+        Player[Tipo] = io.read("l"):lower()
         local Valido = false
         for Nome, Atributos in pairs(Table) do
-            if Nome:lower() == Table2 then
+            if Nome:lower() == Player[Tipo] then
                 Valido = true
                 JuntarAtributos(Atributos)
             end
@@ -86,12 +77,6 @@ local function EscolherRacaClasse(Table, Table2, Tipo, Tipo2)
     until Valido
 end
 
-EscolherRacaClasse(Racas, Player.Raca, "Raca", "racas")
-EscolherRacaClasse(Classes, Player.Classe, "Classe", "classes")
-
-print("\nDistribua os atributos do seu personagem:\n" .. ListarAtributos(Player) ..
-          "Pontos restantes: " .. (18 - SomarAtributos(Player)))
-
 -- Função para distribuir os pontos de atributos
 local function DistribuirPontos(Atributo)
     local PontosRestantes = 18 - SomarAtributos(Player)
@@ -99,18 +84,58 @@ local function DistribuirPontos(Atributo)
     io.write("Coloque os pontos de " .. Atributo .. ": ")
     local NumeroRecebido = io.read("n")
     local Placeholder = io.read("l")
-    if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido > 0 then
+    if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido >= 0 then
         Player.Atributos[Atributo] = Player.Atributos[Atributo] + NumeroRecebido
         print("\n" .. ListarAtributos(Player) .. "Pontos restantes: " ..
                   (PontosRestantes - NumeroRecebido))
     else
-        print("\nNumero invalido, coloque um numero entre 1 e " .. PontosRestantes)
+        print("\nNumero invalido, coloque um numero entre 0 e " .. PontosRestantes)
         DistribuirPontos(Atributo)
     end
 end
 
-repeat
-    DistribuirPontos("Forca")
-    DistribuirPontos("Destreza")
-    DistribuirPontos("Resistencia")
-until SomarAtributos(Player) == 18
+-- Função para perguntar se o jogador quer redistribuir os pontos novamente
+local function RedistribuirPontos(Backup)
+    print("\n\nAtributos finais:\n" .. ListarAtributos(Player))
+    print("Deseja redistribuir os pontos de atributos?")
+    io.write("(S/N): ")
+    local Resposta = io.read("l")
+    if Resposta:lower() == "s" then
+        Player.Atributos = Backup
+        return true
+    else
+        return false
+    end
+end
+
+-- Função que ativa as outras funções de distribuição de pontos
+local function DistribuicaoAtributos()
+    print("\nDistribua os atributos do seu personagem:\n" .. ListarAtributos(Player) ..
+              "Pontos restantes: " .. (18 - SomarAtributos(Player)))
+    local BackupPontos = {}
+    for Nome, Valor in pairs(Player.Atributos) do BackupPontos[Nome] = Valor end
+
+    repeat
+        DistribuirPontos("Forca")
+        DistribuirPontos("Destreza")
+        DistribuirPontos("Resistencia")
+    until SomarAtributos(Player) == 18
+
+    if RedistribuirPontos(BackupPontos) == true then DistribuicaoAtributos() end
+end
+
+-- ? Execução
+
+repeat -- Loop para checar se o nome é valido
+    io.write("Nome: ")
+    Player.Nome = io.read("l"):lower()
+    local NomeValido = StringValida(Player.Nome, 3)
+    if not NomeValido then
+        print("Nome invalido, coloque um nome com mais de 3 letras e sem caracteres especiais.")
+    end
+until NomeValido
+
+EscolherRacaClasse(Racas, "Raca", "racas")
+EscolherRacaClasse(Classes, "Classe", "classes")
+
+DistribuicaoAtributos()
