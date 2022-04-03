@@ -1,22 +1,17 @@
+local JSON = require("json")
+
+local ClassesArquivo = io.open("Data/Classes.json", "r")
+local Classes = JSON.decode(ClassesArquivo:read("*all"))
+
+local RacasArquivo = io.open("Data/Racas.json", "r")
+local Racas = JSON.decode(RacasArquivo:read("*all"))
+
 local Player = {
     Nome = nil,
     Raca = nil,
     Classe = nil,
     Atributos = {Forca = 0, Destreza = 0, Resistencia = 0},
     Equipamentos = {}
-}
-
-local Racas = {
-    Humano = {Forca = 2, Destreza = 2, Resistencia = 2},
-    Elfo = {Forca = 2, Destreza = 3, Resistencia = 1},
-    Anao = {Forca = 2, Destreza = 1, Resistencia = 3},
-    Ogro = {Forca = 3, Destreza = 1, Resistencia = 2}
-}
-
-local Classes = {
-    Guerreiro = {Forca = 2, Destreza = 0, Resistencia = 0},
-    Ladino = {Forca = 0, Destreza = 2, Resistencia = 0},
-    Paladino = {Forca = 0, Destreza = 0, Resistencia = 2}
 }
 
 -- ? Funções
@@ -68,7 +63,7 @@ local function EscolherRacaClasse(Table, Tipo, Tipo2)
     print("\nEscolha uma das " .. Tipo2 .. " abaixo:\n" .. ListarTable(Table))
     repeat -- Loop para checar se é valido
         io.write(Tipo .. ": ")
-        Player[Tipo] = io.read("l"):lower()
+        Player[Tipo] = io.read("*l"):lower()
         local Valido = false
         for Nome, Atributos in pairs(Table) do
             if Nome:lower() == Player[Tipo] then
@@ -88,8 +83,8 @@ local function DistribuirPontos(Atributo)
     local PontosRestantes = 18 - SomarAtributos(Player)
     if PontosRestantes == 0 then return true end
     io.write("Coloque os pontos de " .. Atributo .. ": ")
-    local NumeroRecebido = io.read("n")
-    local Placeholder = io.read("l")
+    local NumeroRecebido = io.read("*n")
+    local Placeholder = io.read("*l")
     if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido >= 0 then
         Player.Atributos[Atributo] = Player.Atributos[Atributo] + NumeroRecebido
         print("\n" .. ListarTableDictionarys(Player.Atributos, 1) .. "Pontos restantes: " ..
@@ -105,7 +100,7 @@ local function RedistribuirPontos(Backup)
     print("\n\nAtributos finais:\n" .. ListarTableDictionarys(Player.Atributos, 1))
     print("Deseja redistribuir os pontos de atributos?")
     io.write("(S/N): ")
-    local Resposta = io.read("l")
+    local Resposta = io.read("*l")
     if Resposta:lower() == "s" then
         Player.Atributos = Backup
         return true
@@ -134,7 +129,7 @@ end
 
 repeat -- Loop para checar se o nome é valido
     io.write("Nome: ")
-    Player.Nome = io.read("l"):lower()
+    Player.Nome = io.read("*l"):lower()
     local NomeValido = StringValida(Player.Nome, 3)
     if not NomeValido then
         print("Nome invalido, coloque um nome com mais de 3 letras e sem caracteres especiais.")
@@ -146,5 +141,7 @@ EscolherRacaClasse(Classes, "Classe", "classes")
 
 DistribuicaoAtributos()
 
+local PlayerArquivo = io.open("Data/Player.json", "w")
+PlayerArquivo:write(JSON.encode(Player))
 
 print("\n\n\n\n\nPERSONAGEM CRIADO:\n" .. ListarTableDictionarys(Player, 1))
