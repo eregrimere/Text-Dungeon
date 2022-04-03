@@ -1,4 +1,5 @@
 local JSON = require("json")
+local TableUtils = require("Modules/TableUtils")
 
 local ClassesArquivo = io.open("Data/Classes.json", "r")
 local Classes = JSON.decode(ClassesArquivo:read("*all"))
@@ -25,42 +26,13 @@ local function StringValida(String, QuantidadeLetras)
     return true -- retorna true se a string existe, não é vazia e não contém caracteres especiais
 end
 
--- Lista os valores dentro de uma table
-local function ListarTable(Table)
-    local TextoFinal = ""
-    for Nome, Valor in pairs(Table) do TextoFinal = TextoFinal .. Nome .. "    " end
-    return TextoFinal
-end
-
 -- Juntar atributos de duas tables
 local function JuntarAtributos(Table)
     for Nome, Valor in pairs(Table) do Player.Atributos[Nome] = Player.Atributos[Nome] + Valor end
 end
 
--- Lista um dictionary recebido
-local function ListarTableDictionarys(Table, Espacos)
-    local TextoFinal = ""
-    if Espacos == nil then Espacos = 0 end
-    for Nome, Valor in pairs(Table) do
-        if type(Valor) == "table" then
-            TextoFinal = TextoFinal .. string.rep("    ", Espacos) .. Nome .. ":\n" .. ListarTableDictionarys(Valor, Espacos + 1)
-        else
-            TextoFinal = TextoFinal .. string.rep("    ", Espacos) .. Nome .. ": " .. Valor .. "\n"
-        end
-    end
-    return TextoFinal
-end
-
-
--- Retorna o valor total de pontos de atributos de um personagem
-local function SomarAtributos(Personagem)
-    local SomaTotal = 0
-    for _, Valor in pairs(Personagem.Atributos) do SomaTotal = SomaTotal + Valor end
-    return SomaTotal
-end
-
 local function EscolherRacaClasse(Table, Tipo, Tipo2)
-    print("\nEscolha uma das " .. Tipo2 .. " abaixo:\n" .. ListarTable(Table))
+    print("\nEscolha uma das " .. Tipo2 .. " abaixo:\n" .. TableUtils.ListarTable(Table))
     repeat -- Loop para checar se é valido
         io.write(Tipo .. ": ")
         Player[Tipo] = io.read("*l"):lower()
@@ -73,21 +45,21 @@ local function EscolherRacaClasse(Table, Tipo, Tipo2)
         end
         if not Valido then
             print("\n" .. Tipo .. " invalida, escolha uma das " .. Tipo2 .. " abaixo:\n" ..
-                      ListarTable(Table))
+                      TableUtils.ListarTable(Table))
         end
     until Valido
 end
 
 -- Função para distribuir os pontos de atributos
 local function DistribuirPontos(Atributo)
-    local PontosRestantes = 18 - SomarAtributos(Player)
+    local PontosRestantes = 18 - TableUtils.SomarAtributos(Player)
     if PontosRestantes == 0 then return true end
     io.write("Coloque os pontos de " .. Atributo .. ": ")
     local NumeroRecebido = io.read("*n")
     local Placeholder = io.read("*l")
     if NumeroRecebido and NumeroRecebido <= PontosRestantes and NumeroRecebido >= 0 then
         Player.Atributos[Atributo] = Player.Atributos[Atributo] + NumeroRecebido
-        print("\n" .. ListarTableDictionarys(Player.Atributos, 1) .. "Pontos restantes: " ..
+        print("\n" .. TableUtils.ListarTableDictionaries(Player.Atributos, 1) .. "Pontos restantes: " ..
                   (PontosRestantes - NumeroRecebido))
     else
         print("\nNumero invalido, coloque um numero entre 0 e " .. PontosRestantes)
@@ -97,7 +69,7 @@ end
 
 -- Função para perguntar se o jogador quer redistribuir os pontos novamente
 local function RedistribuirPontos(Backup)
-    print("\n\nAtributos finais:\n" .. ListarTableDictionarys(Player.Atributos, 1))
+    print("\n\nAtributos finais:\n" .. TableUtils.ListarTableDictionaries(Player.Atributos, 1))
     print("Deseja redistribuir os pontos de atributos?")
     io.write("(S/N): ")
     local Resposta = io.read("*l")
@@ -111,8 +83,8 @@ end
 
 -- Função que ativa as outras funções de distribuição de pontos
 local function DistribuicaoAtributos()
-    print("\nDistribua os atributos do seu personagem:\n" .. ListarTableDictionarys(Player.Atributos, 1) ..
-              "Pontos restantes: " .. (18 - SomarAtributos(Player)))
+    print("\nDistribua os atributos do seu personagem:\n" .. TableUtils.ListarTableDictionaries(Player.Atributos, 1) ..
+              "Pontos restantes: " .. (18 - TableUtils.SomarAtributos(Player)))
     local BackupPontos = {}
     for Nome, Valor in pairs(Player.Atributos) do BackupPontos[Nome] = Valor end
 
@@ -120,7 +92,7 @@ local function DistribuicaoAtributos()
         DistribuirPontos("Forca")
         DistribuirPontos("Destreza")
         DistribuirPontos("Resistencia")
-    until SomarAtributos(Player) == 18
+    until TableUtils.SomarAtributos(Player) == 18
 
     if RedistribuirPontos(BackupPontos) == true then DistribuicaoAtributos() end
 end
@@ -144,4 +116,4 @@ DistribuicaoAtributos()
 local PlayerArquivo = io.open("Data/Player.json", "w")
 PlayerArquivo:write(JSON.encode(Player))
 
-print("\n\n\n\n\nPERSONAGEM CRIADO:\n" .. ListarTableDictionarys(Player, 1))
+print("\n\n\n\n\nPERSONAGEM CRIADO:\n" .. TableUtils.ListarTableDictionaries(Player, 1))
