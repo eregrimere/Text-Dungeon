@@ -1,0 +1,22 @@
+{
+    "Elfo": {
+        "Destreza": 3,
+        "Forca": 2,
+        "Resistencia": 1
+    },
+    "Humano": {
+        "Destreza": 2,
+        "Forca": 2,
+        "Resistencia": 2
+    },
+    "Ogro": {
+        "Destreza": 1,
+        "Forca": 3,
+        "Resistencia": 2
+    },
+    "Anao": {
+        "Destreza": 1,
+        "Forca": 2,
+        "Resistencia": 3
+    }
+}

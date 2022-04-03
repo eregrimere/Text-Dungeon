@@ -1,0 +1,17 @@
+{
+    "Ladino": {
+        "Destreza": 2,
+        "Forca": 0,
+        "Resistencia": 0
+    },
+    "Guerreiro": {
+        "Destreza": 0,
+        "Forca": 2,
+        "Resistencia": 0
+    },
+    "Paladino": {
+        "Destreza": 0,
+        "Forca": 0,
+        "Resistencia": 2
+    }
+}
