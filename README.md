@@ -11,17 +11,18 @@ Text Dungeon é um projeto simples de um Text-based RPG, programado usando a lin
   - Gepedo
   - Durudz
   - Haven 
+  - Hatoushi
 
 ---
 
 ## Divisão de grupos
 O projeto será feito dividindo grupos para cada sistema, cada pessoa irá utilizar forks para fazer as alterações e mandar Pull Requests para a branch do seu grupo.
 
-| Grupo 1 | Grupo 2 | Grupo 3 | Grupo 4 |
-| ------- | ------- | ------- | ------- |
-| Math    | Durudz  | Obiits  | Jumuel  |
-| Fuzzy   | Mugi    | Gepedo  | Hatoush |
-|         | Haven   |         | Rival   |
+| Grupo 1 | Grupo 2 | Grupo 3 | Grupo 4  |
+| ------- | ------- | ------- | -------  |
+| Math    | Durudz  | Obiits  | Jumuel   |
+| Fuzzy   | Mugi    | Gepedo  | Hatoushi |
+|         | Haven   |         | Rival    |
 
 - **Grupo 1:** [Interações][1]
 - **Grupo 2:** [Combate][2]
