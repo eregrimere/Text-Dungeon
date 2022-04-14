@@ -1,0 +1,22 @@
+{   
+    "Placeholder": {
+        "Peso": 10,
+        "AndarMin": 1,
+        "AndarMax": 3,
+        "Experiencia": 2
+    },
+    "Placeholder2": {
+        "Peso": 5,
+        "AndarMin": 3,
+        "AndarMax": 3,
+        "Experiencia": 4
+    },
+    "Placeholder3": {
+        "Peso": 10,
+        "AndarMin": 1,
+        "AndarMax": 2,
+        "Experiencia": 2
+    }
+
+
+}

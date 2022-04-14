@@ -1,0 +1,8 @@
+1 - Checagem dos Inimigos
+v
+
+2 - Combate
+todo
+
+3 - Retornar Resultados
+todo
