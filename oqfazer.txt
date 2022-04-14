@@ -2,7 +2,9 @@
 v
 
 2 - Combate
-todo
+- lvl dos cabra
+- dano dado etc
+- modificador
 
 3 - Retornar Resultados
 todo
